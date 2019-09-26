@@ -1,16 +1,12 @@
 document.body.onload = createGrid;
 var mainDiv = document.getElementById("mainDiv");
 
+clicks = 0
 function sign() {
-
-    var xState = {
-
+    clicks++;
+    if (clicks%2==0){
+        col.innerHTML = "x"
     }
-
-    var oState = {
-
-    }
-
 
 }
 
