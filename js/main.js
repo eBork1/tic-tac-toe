@@ -3,6 +3,15 @@ var mainDiv = document.getElementById("mainDiv");
 
 function sign() {
 
+    var xState = {
+
+    }
+
+    var oState = {
+
+    }
+
+
 }
 
 function createGrid() {
