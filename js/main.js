@@ -2,12 +2,14 @@ document.body.onload = createGrid;
 var mainDiv = document.getElementById("mainDiv");
 
 clicks = 0
-function sign() {
-    clicks++;
-    if (clicks%2==0){
-        col.innerHTML = "x"
-    }
 
+function sign() {               // mark the board with X or O
+    clicks++;
+    if (clicks % 2 == 0) {
+        this.innerHTML = "x";
+    } else {
+        this.innerHTML = "o";
+    }
 }
 
 function createGrid() {
@@ -35,8 +37,11 @@ function createGrid() {
             col.addEventListener('click', sign);
 
             row.appendChild(col);
+
         }
         container.appendChild(row);
     }
     mainDiv.appendChild(container);
+
+
 }
