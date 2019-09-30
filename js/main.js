@@ -1,7 +1,7 @@
 document.body.onload = createGrid;
 var mainDiv = document.getElementById("mainDiv");
 var status;
-var reset; 
+ 
 
 let ar = new Array(9).fill(0);
 console.log(ar);
@@ -49,11 +49,11 @@ function checkWin() {
     for (let i = 0; i < wins.length; i++) {
         var a = checkValue(wins[i][0], wins[i][1], wins[i][2]);
         if (a) {
-            status = "win";
             var TurnText = document.createElement('h4');
-            TurnText.innerHTML = "X WINS!";
+            TurnText.innerHTML = "Player " + a + " WINS!";
             mainDiv.appendChild(TurnText);
             ar.fill(3);
+            console.log(ar);
             break;
         }
     }
