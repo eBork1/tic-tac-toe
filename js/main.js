@@ -36,10 +36,10 @@ function checkValue(a, b, c) {
     }
     var sum = ar[a] + ar[b] + ar[c];
     if (sum == 3) {
-        return 1;
+        return 2;
     }
     if (sum == 6) {
-        return 2;
+        return 1;
     }
     return 0;
 }
