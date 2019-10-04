@@ -80,7 +80,7 @@ function sign() {
     var i = xCoord * 3 + yCoord;
     var currentValue = gameBoardArray[i];
     if (currentValue == NO_TOKEN) {
-        currentTurn++;                 // adds clicks. even numbers are X, odd numbers are O
+        currentTurn++;                 // Increment whose turn it is. Even = X, Odd = O
         if (currentTurn % 2) {
             this.innerHTML = "x";
             TurnText.innerHTML = "O's turn!";
