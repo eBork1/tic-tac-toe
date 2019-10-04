@@ -1,19 +1,52 @@
-document.body.onload = createGrid;
+// Get Application
+document.body.onload = layout;
 var mainDiv = document.getElementById("mainDiv");
+var TurnText = document.createElement('h4');
+var WinText = document.createElement('h4');
 
-let ar = new Array(9).fill(0);
-console.log(ar);
+// Symbolic Constants
+const NO_TOKEN = 0;
+const X_TOKEN = 1;
+const O_TOKEN = 2;
+
+// Variables
+let gameBoardArray = new Array(9).fill(NO_TOKEN);
+var currentTurn = 0; // Even = X, Odd = O
 var wins = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-clicks = 0
 
-//set board
-function createGrid() {
-
-    //title 
+// Draw the application
+function layout() {
+    // Draw Title Text 
     var title = document.createElement('h2');
     title.innerHTML = "Tic-Tac-Toe";
     title.className = "h2 text-center";
     mainDiv.appendChild(title);
+
+    // Draw Grid
+    createGrid();
+
+    // Draw Current Player Turn Text
+    TurnText.setAttribute('class', 'text-center');
+    TurnText.innerHTML = "It's X's turn!";
+    mainDiv.appendChild(TurnText);
+
+    // Draw Winner Text
+    WinText.className = "h4 text-center";
+    mainDiv.appendChild(WinText);
+
+    // Draw Reset Button
+    var resetBtnContainer = document.createElement('div');
+    resetBtnContainer.setAttribute('class', 'col-9 mx-auto text-center');
+    var resetBtn = document.createElement('p');
+    resetBtn.setAttribute('class', 'reset-btn btn btn-block')
+    resetBtn.innerHTML = "Reset";
+    resetBtn.addEventListener('click', reset);
+    resetBtnContainer.appendChild(resetBtn);
+    mainDiv.appendChild(resetBtnContainer);
+}
+
+// Draw the game board
+function createGrid() {
 
     // main container for the game
     var container = document.createElement('div');
@@ -41,58 +74,67 @@ function createGrid() {
 
 // mark the board with X or O
 function sign() {
-    console.log(this);
-    var q = this.id.split("col");
-    var idx = (Number(q[0]) * 3 + Number(q[1]));
-    if (ar[idx] === 0) {
-        clicks++;                 // adds clicks. even numbers are X, odd numbers are O
-        if (clicks % 2) {
+    var boxCoordinate = this.id.split("col");
+    var xCoord = (Number(boxCoordinate[0]));
+    var yCoord =(Number(boxCoordinate[1]));
+    var i = xCoord * 3 + yCoord;
+    var currentValue = gameBoardArray[i];
+    if (currentValue == NO_TOKEN) {
+        currentTurn++;                 // adds clicks. even numbers are X, odd numbers are O
+        if (currentTurn % 2) {
             this.innerHTML = "x";
             TurnText.innerHTML = "O's turn!";
-            ar[idx] = 2;
-
+            gameBoardArray[i] = X_TOKEN;
         } else {
             this.innerHTML = "o";
             TurnText.innerHTML = "X's turn!";
-            ar[idx] = 1;
+            gameBoardArray[i] = O_TOKEN;
         }
         checkWin();
     }
 }
 
-//display turn
-var TurnText = document.createElement('h4');
-TurnText.innerHTML = "It's X's turn!";
-mainDiv.appendChild(TurnText);
-
-// check for win
+// Check if there is a win anywhere on the board
 function checkWin() {
     for (let i = 0; i < wins.length; i++) {
-        var a = checkValue(wins[i][0], wins[i][1], wins[i][2]);
-        if (a) {
-            var TurnText = document.createElement('h4');
-            TurnText.innerHTML = "Player " + a + " WINS!";
-            mainDiv.appendChild(TurnText);
-            ar.fill(3);
-            console.log(ar);
+        var winner = checkValue(wins[i][0], wins[i][1], wins[i][2]);
+        if (winner) {
+            WinText.innerHTML = "Player " + winner + " WINS!";
             break;
         }
     }
 }
 
-//check value
-function checkValue(a, b, c) {
-    if (ar[a] == 0 || ar[b] == 0 || ar[c] == 0) {
-        return 0;
+// Check if the boxes referenced by the 3 provided indexes indicate that a player won 
+function checkValue(indexA, indexB, indexC) {
+    if (gameBoardArray[indexA] == NO_TOKEN
+        || gameBoardArray[indexB] == NO_TOKEN
+        || gameBoardArray[indexC] == NO_TOKEN) {
+        return NO_TOKEN;
     }
-    var sum = ar[a] + ar[b] + ar[c];
-    if (sum == 3) {
-        return 2;
+
+    var sum = gameBoardArray[indexA] + gameBoardArray[indexB] + gameBoardArray[indexC];
+    if (sum == (O_TOKEN * 3)) {
+        return O_TOKEN;
     }
-    if (sum == 6) {
-        return 1;
+
+    if (sum == (X_TOKEN * 3)) {
+        return X_TOKEN;
     }
-    return 0;
+
+    // No winner
+    return NO_TOKEN;
 }
 
-//reset button
+// Handle resetting the game
+function reset(){
+    // Reset Layout
+    mainDiv.innerHTML = '';
+    WinText.innerHTML = '';
+    currentTurn = 0;
+    layout();
+
+    // Rest Board
+    gameBoardArray = new Array(9).fill(NO_TOKEN);  
+
+}
